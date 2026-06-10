@@ -8,16 +8,11 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class EquipoResponseDTO {
+public class ModeloResponseDTO {
 
     private UUID id;
-    private TipoEquipoResumenDTO tipo;
+    private String nombre;
     private MarcaResumenDTO marca;
-    private ModeloResumenDTO modelo;
-    private String serial;
-    private String estado;
-    private AreaResumenDTO area;
-    private String observaciones;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

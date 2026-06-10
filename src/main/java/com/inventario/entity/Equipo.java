@@ -1,35 +1,38 @@
 package com.inventario.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "equipos")
-@Data
+@SQLRestriction("deleted_at IS NULL")
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Equipo {
+@ToString(exclude = {"tipo", "marca", "modelo", "area"})
+public class Equipo extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-    @Column(nullable = false)
-    private String tipo;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "tipo_id", nullable = false)
+    private TipoEquipo tipo;
 
-    @Column(nullable = false)
-    private String marca;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "marca_id", nullable = false)
+    private Marca marca;
 
-    @Column(nullable = false)
-    private String modelo;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "modelo_id", nullable = false)
+    private Modelo modelo;
 
     @Column(unique = true, nullable = false)
     private String serial;
@@ -37,27 +40,10 @@ public class Equipo {
     @Column(nullable = false)
     private String estado;
 
-    @Column(nullable = false)
-    private String area;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "area_id", nullable = false)
+    private Area area;
 
     @Column(columnDefinition = "TEXT")
     private String observaciones;
-
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
 }

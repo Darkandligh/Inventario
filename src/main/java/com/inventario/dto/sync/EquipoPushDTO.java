@@ -1,14 +1,21 @@
-package com.inventario.dto;
+package com.inventario.dto.sync;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-public class EquipoRequestDTO {
+public class EquipoPushDTO {
+
+    @NotNull(message = "El id es obligatorio")
+    private UUID id;
+
+    @NotNull(message = "El updatedAt es obligatorio")
+    private LocalDateTime updatedAt;
 
     @NotNull(message = "El tipo es obligatorio")
     private UUID tipoId;
@@ -20,16 +27,16 @@ public class EquipoRequestDTO {
     private UUID modeloId;
 
     @NotBlank(message = "El serial es obligatorio")
-    @Size(max = 100, message = "El serial no puede superar 100 caracteres")
+    @Size(max = 100)
     private String serial;
 
     @NotBlank(message = "El estado es obligatorio")
-    @Size(max = 50, message = "El estado no puede superar 50 caracteres")
+    @Size(max = 50)
     private String estado;
 
     @NotNull(message = "El área es obligatoria")
     private UUID areaId;
 
-    @Size(max = 500, message = "Las observaciones no pueden superar 500 caracteres")
+    @Size(max = 500)
     private String observaciones;
 }
